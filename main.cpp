@@ -1,58 +1,18 @@
 #include <iostream>
+#include "model/Vector3D.h"
+#include "model/Segment3D.h"
 
-class Vector3D {
-    double X{};
-    double Y{};
-    double Z{};
-public:
-    Vector3D() = default;
+Vector3D Intersect(Segment3D segment1, Segment3D segment2);
 
-    Vector3D(double x, double y, double z) : X(x), Y(y), Z(z) {}
-
-    Vector3D operator+(Vector3D v) {
-        return {this->X + v.X, this->Y + v.Y, this->Z + v.Z};
-    }
-
-    Vector3D operator-(Vector3D v) {
-        return {this->X - v.X, this->Y - v.Y, this->Z - v.Z};
-    }
-
-    Vector3D operator*(double a) {
-        return {this->X * a, this->Y * a, this->Z * a};
-    }
-
-    double dot(Vector3D v) {
-        return v.X * this->X + v.Y * this->Y + v.Z * this->Z;
-    }
-
-    double norm2() {
-        return dot(*this);
-    }
-
-    Vector3D cross(Vector3D v) {
-        return {
-                this->Y * v.Z - v.Y * this->Z,
-                this->Z * v.X - v.Z * this->X,
-                this->X * v.Y - v.X * this->Y
-        };
-    }
-
-    void print() {
-        std::cout << this->X << " " << this->Y << " " << this->Z << std::endl;
-    }
-
-};
-
-
-class Segment3D {
-public:
-    Segment3D() = default;
-
-    Segment3D(const Vector3D &start, const Vector3D &anEnd) : start(start), end(anEnd) {}
-
-    Vector3D end{};
-    Vector3D start{};
-};
+int main() {
+    //example
+    Segment3D segment1{{3, 0, 6},
+                       {1, 2, 5}}, segment2{{2, 1, 7},
+                                            {2, 1, 3}};
+    Vector3D result_vector = Intersect(segment1, segment2);
+    std::cout << result_vector;
+    return 0;
+}
 
 Vector3D Intersect(Segment3D segment1, Segment3D segment2) {
     Vector3D a = segment1.end - segment1.start;
@@ -72,16 +32,6 @@ Vector3D Intersect(Segment3D segment1, Segment3D segment2) {
     }
     std::cout << "Segments don't intersect" << std::endl;
     return {};
-}
-
-int main() {
-    //example
-    Segment3D segment1{{3, 0, 6},
-                       {1, 2, 5}}, segment2{{2, 1, 7},
-                                            {2, 1, 2}};
-    Vector3D result_vector = Intersect(segment1, segment2);
-    result_vector.print();
-    return 0;
 }
 
 
